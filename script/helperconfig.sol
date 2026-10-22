@@ -13,6 +13,7 @@ import {MockV3Aggregator} from "../test/MOCKS/mockV3Aggregator.sol";
 contract helperconfig is Script {
     // if we are on a local anvil chain we deploy mocks else we use the real pricefeed address
     networkconfig public activeNetworkConfig;
+
     struct networkconfig {
         address pricefeed; // ETH/USD pricefeeed adderess
     }
@@ -33,9 +34,7 @@ contract helperconfig is Script {
     function getsepoliaethconfig() public pure returns (networkconfig memory) {
         // price feed address
 
-        networkconfig memory sepoliaconfig = networkconfig({
-            pricefeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306
-        });
+        networkconfig memory sepoliaconfig = networkconfig({pricefeed: 0x694AA1769357215DE4FAC081bf1f309aDC325306});
         return sepoliaconfig;
     }
 
@@ -44,23 +43,16 @@ contract helperconfig is Script {
             return activeNetworkConfig;
         }
         vm.startBroadcast();
-        MockV3Aggregator mockpricefeed = new MockV3Aggregator(
-            DECIMALS,
-            INITIAL_PRICE
-        );
+        MockV3Aggregator mockpricefeed = new MockV3Aggregator(DECIMALS, INITIAL_PRICE);
         vm.stopBroadcast();
 
-        networkconfig memory anvilconfig = networkconfig({
-            pricefeed: address(mockpricefeed)
-        });
+        networkconfig memory anvilconfig = networkconfig({pricefeed: address(mockpricefeed)});
 
         return anvilconfig;
     }
 
     function getmainnetethconfig() public pure returns (networkconfig memory) {
-        networkconfig memory ethconfig = networkconfig({
-            pricefeed: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419
-        });
+        networkconfig memory ethconfig = networkconfig({pricefeed: 0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419});
         return ethconfig;
 
         // price feed address

@@ -12,8 +12,7 @@ contract fundme {
     uint256 public constant MINIMUMUSD = 5e18;
     AggregatorV3Interface private s_pricefeed;
     address[] private s_funders;
-    mapping(address funder => uint256 amountfunded)
-        private s_addresstoamountfunded;
+    mapping(address funder => uint256 amountfunded) private s_addresstoamountfunded;
 
     address private immutable i_owner;
 
@@ -27,14 +26,9 @@ contract fundme {
         //allow users to send a minimum number of eth
 
         // 1e18 = 1000000000000000000 = 1ETH
-        require(
-            msg.value.getconversionrate(s_pricefeed) >= MINIMUMUSD,
-            "didn't send enough eth"
-        );
+        require(msg.value.getconversionrate(s_pricefeed) >= MINIMUMUSD, "didn't send enough eth");
         s_funders.push(msg.sender);
-        s_addresstoamountfunded[msg.sender] =
-            s_addresstoamountfunded[msg.sender] +
-            msg.value;
+        s_addresstoamountfunded[msg.sender] = s_addresstoamountfunded[msg.sender] + msg.value;
     }
 
     function getversion() public view returns (uint256) {
@@ -48,11 +42,7 @@ contract fundme {
 
         //require(msg.sender == i_owner , "YOU ARE NOT THE OWNER OF THIS ADDRESS");
 
-        for (
-            uint256 funderindex = 0;
-            funderindex < s_funders.length;
-            funderindex++
-        ) {
+        for (uint256 funderindex = 0; funderindex < s_funders.length; funderindex++) {
             address funder = s_funders[funderindex];
             s_addresstoamountfunded[funder] = 0;
         }
@@ -72,29 +62,21 @@ contract fundme {
 
         // call
 
-        (bool callsuccess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callsuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         require(callsuccess, "Call Failed");
     }
 
     function cheaperwithdraw() public only0wner {
         uint256 funderslength = s_funders.length;
 
-        for (
-            uint256 funderindex = 0;
-            funderindex < funderslength;
-            funderindex++
-        ) {
+        for (uint256 funderindex = 0; funderindex < funderslength; funderindex++) {
             address funder = s_funders[funderindex];
             s_addresstoamountfunded[funder] = 0;
         }
 
         s_funders = new address[](0);
 
-        (bool callsuccess, ) = payable(msg.sender).call{
-            value: address(this).balance
-        }("");
+        (bool callsuccess,) = payable(msg.sender).call{value: address(this).balance}("");
         require(callsuccess, "Call Failed");
     }
 
@@ -117,9 +99,7 @@ contract fundme {
      * View / Pure functions (getters)
      *
      */
-    function getaddresstoamountfunded(
-        address fundingaddress
-    ) external view returns (uint256) {
+    function getaddresstoamountfunded(address fundingaddress) external view returns (uint256) {
         return s_addresstoamountfunded[fundingaddress];
     }
 

@@ -19,6 +19,7 @@ contract interactionTest is Test {
         fundmecontract = deployfundmecontract.run();
         vm.deal(user, STARTING_BALANCE);
     }
+
     function testuser_can_fund_interactions() public {
         funding_fundme test_funder_contract = new funding_fundme();
         vm.deal(address(test_funder_contract), STARTING_BALANCE);

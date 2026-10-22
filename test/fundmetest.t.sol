@@ -33,6 +33,7 @@ contract fundmetest is Test {
     function testifownerismsgsender() public {
         assertEq(fundmecontract.getowner(), msg.sender);
     }
+
     function testgetversion() public {
         uint256 version = fundmecontract.getversion();
         console.log("version is ", version);
@@ -56,6 +57,7 @@ contract fundmetest is Test {
         vm.prank(user);
         fundmecontract.withdraw();
     }
+
     function testwithdrawwithasinglefunder() public funded {
         // arrange
 
@@ -72,10 +74,7 @@ contract fundmetest is Test {
         uint256 EndingContractBalance = address(fundmecontract).balance;
 
         assertEq(EndingContractBalance, 0);
-        assertEq(
-            StartingOwnerBalance + StaringContarctBalance,
-            EndingOwnerBalance
-        );
+        assertEq(StartingOwnerBalance + StaringContarctBalance, EndingOwnerBalance);
     }
 
     function testwithdrawwithmultiplefunders() public funded {
@@ -101,10 +100,7 @@ contract fundmetest is Test {
         //assert
 
         assert(address(fundmecontract).balance == 0);
-        assert(
-            StartingOwnerBalance + StaringContarctBalance ==
-                fundmecontract.getowner().balance
-        );
+        assert(StartingOwnerBalance + StaringContarctBalance == fundmecontract.getowner().balance);
     }
 
     function testcheaperwithdrawwithmultiplefunders() public funded {
@@ -130,9 +126,6 @@ contract fundmetest is Test {
         //assert
 
         assert(address(fundmecontract).balance == 0);
-        assert(
-            StartingOwnerBalance + StaringContarctBalance ==
-                fundmecontract.getowner().balance
-        );
+        assert(StartingOwnerBalance + StaringContarctBalance == fundmecontract.getowner().balance);
     }
 }
